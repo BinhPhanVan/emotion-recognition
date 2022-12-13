@@ -24,7 +24,6 @@ def recognize_image(url):
 
         # Find haar cascade to draw bounding box around face
     ret, frame = cap.read()
-    # frame = cv2.resize(frame, (640, 480))
     face_detector = cv2.CascadeClassifier('haarcascades/haarcascade_frontalface_default.xml')
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
