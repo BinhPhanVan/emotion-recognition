@@ -46,3 +46,16 @@
   margin-left: auto;
   margin-right: auto;
 }
+#root, .container-fluid {
+  /* The image used */
+  background-image: url("../public/background1.jpg");
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+

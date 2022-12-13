@@ -7,13 +7,14 @@ function App() {
     file: [],
     filepreview: null,
   });
-
+  const [avatarRes, setavatarRes] = useState("");
   const handleInputChange = (event) => {
     setuserInfo({
       ...userInfo,
       file: event.target.files[0],
       filepreview: URL.createObjectURL(event.target.files[0]),
     });
+    setavatarRes("");
   };
 
   const [isSucces, setSuccess] = useState(null);
@@ -22,73 +23,70 @@ function App() {
     e.preventDefault();
     const formdata = new FormData();
     formdata.append("image_url", userInfo.file);
-
     axios
-      .post("http://127.0.0.1:8000/api/v1/users/", formdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+      .post("http://127.0.0.1:8000/api/v1/users/", formdata)
       .then((response) => {
-        this.file = [];
-        this.filepreview = null;
-        setSuccess("Image upload successfully");
-        console.log(response.data);
-        return response.data.message;
+        setSuccess("scess");
+        setavatarRes(response.data["image_url"]);
       })
       .catch((err) => {
-        console.log(err);
+        setavatarRes(
+          "https://thumbs.dreamstime.com/b/error-rubber-stamp-word-error-inside-illustration-109026446.jpg"
+        );
       });
   };
 
   return (
-    <div className="container-fluid">
-      <form class="form-signin">
-        <div className="formdesign">
-          {isSucces !== null ? <h4> {isSucces} </h4> : null}
+    <div class="bg">
+      <div className="container-fluid">
+        <div className="formdesign pt-5 pb-3">
           <div className="form-row">
             <label className="text-white">Select Image :</label>
             <input
               type="file"
               className="form-control"
               name="upload_file"
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e)}
             />
           </div>
-
-          <div className="form-row">
-            <button
-              type="submit"
-              className="btn btn-dark"
-              onClick={(e) => submit(e)}
-            >
-              {" "}
-              Save{" "}
-            </button>
-          </div>
-        </div>
-      </form>
-
-      <div class="container px-4 text-center position-absolute top-50 start-50 translate-middle">
-        <div class="row gx-5" >
-          <div class="col">
-            <div class="p-3 border bg-light">
-              {userInfo.filepreview !== null ? (
-                <img
-                  className="previewimg"
-                  src={userInfo.filepreview}
-                  alt="UploadImage"
-                />
-              ) : null}
-            </div>
-          </div>
-          <div class="col">
-            <div class="p-3 border bg-light">
-            {userInfo.filepreview !== null ? (
-                <img
-                  className="previewimg"
-                  src={userInfo.filepreview}
-                  alt="UploadImage"
-                />
-              ) : null}
+          <div class="container px-4 text-center position-absolute top-50 start-50 translate-middle">
+            <div class="row gx-5">
+              <div class="col">
+                <div class="p-3 border bg-light">
+                  {userInfo.filepreview !== null ? (
+                    <img
+                      className="previewimg"
+                      src={userInfo.filepreview}
+                      alt="UploadImage"
+                    />
+                  ) : null}
+                </div>
+              </div>
+              <div class="col">
+                <div className="form-row text-center position-absolute top-50 start-50 translate-middle">
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    onClick={(e) => submit(e)}
+                  >
+                    {" "}
+                    Emotion recognition{" "}
+                  </button>
+                </div>
+              </div>
+              <div class="col">
+                <div class="p-3 border bg-light">
+                  {avatarRes !== "" ? (
+                    <img
+                      className="previewimg"
+                      src={avatarRes}
+                      alt="UploadImage"
+                    />
+                  ) : (
+                    <img className="previewimg" src="" alt="UploadImage" />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
